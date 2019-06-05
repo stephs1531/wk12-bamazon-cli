@@ -1,2 +1,4 @@
-# wk12-bamazon-cli
-Amazon-esque CLI app using node and mysql
+# wk12-bamazon
+Amazon-esque CLI app
+
+Insert homework instructions here
