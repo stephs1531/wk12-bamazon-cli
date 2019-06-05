@@ -21,7 +21,6 @@ var connection = mysql.createConnection({
   connection.connect(function(err, res) {
     if (err) throw err;
     console.log("connected as id " + connection.threadId + "\n");
-    // console.table(res);
   });
 
   //start shopping function
@@ -65,12 +64,24 @@ var connection = mysql.createConnection({
           console.log(userChoice);
         }
 
-        //update stock after a purchase
+        //create variables for purchase total and the math to update stock
         var updateStock = parseInt(userChoice.stock_quantity) - parseInt(answer.quantity);
+        var total = (parseFloat(answer.quantity) * userChoice.price).toFixed(2);
+
+        //update stock after a purchase
         if (userChoice.stock_quantity < parseInt(answer.quantity)) {
           console.log("Out of stock!");
           startOver();
-          
+        }
+        else {
+          connection.query("UPDATE products SET ? WHERE ?", [{stock_quantity: updateStock}, {item_id: userChoice.item_id}], function (err, res) {
+            if (err) throw err;
+            console.log(`
+            Thanks for your purchase!
+            Your total is: ${total}
+            `);
+            startOver();
+          })
         }
       }); //close inquirer prompt
 
