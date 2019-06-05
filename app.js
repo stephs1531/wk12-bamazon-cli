@@ -28,7 +28,8 @@ var connection = mysql.createConnection({
   shop();
 
   function shop() {
-    connection.query("SELECT * FROM products", function (err, res) {
+    var query = "SELECT * FROM products";
+    connection.query(query, function (err, res) {
       
       //add rows from database to cli-table
       for (var i = 0; i<res.length; i++) {
@@ -63,13 +64,38 @@ var connection = mysql.createConnection({
           }
           console.log(userChoice);
         }
-      }); //close 1st inquirer prompt
 
-    }); //close first connection.query
+        //update stock after a purchase
+        var updateStock = parseInt(userChoice.stock_quantity) - parseInt(answer.quantity);
+        if (userChoice.stock_quantity < parseInt(answer.quantity)) {
+          console.log("Out of stock!");
+          startOver();
+          
+        }
+      }); //close inquirer prompt
+
+    }); //close connection.query
 
   
-  };
+  }; // close shop();
 
+  //function to start the program again after a sale or quit
+  function startOver() {
+    inquirer.prompt({
+      name: "startOver",
+      type: "list",
+      message: "Would you like to purchase another item?",
+      choices: ["Yes", "No"]
+    }).then(function (answer) {
+      if (answer.startOver == "Yes") {
+        shop();
+      }
+      else {
+        console.log("Thanks for shopping! Come again!")
+        connection.end();
+      }
+    })
+  }
 
   //start function with inquirer prompts
   // function start() {
