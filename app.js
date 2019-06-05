@@ -49,7 +49,21 @@ var connection = mysql.createConnection({
           }
           return choices;
         }
-      }]); //close 1st inquirer prompt
+      },
+      {
+        name: "quantity",
+        type: "input",
+        message: "How many do you want?"
+      }
+      ]).then(function (answer) {
+        //sort through table object to find data that matches the user's choice and make a new variable for that data
+        for (var i =0; i<res.length; i++) {
+          if (res[i].product_name == answer.choice) {
+            var userChoice = res[i];
+          }
+          console.log(userChoice);
+        }
+      }); //close 1st inquirer prompt
 
     }); //close first connection.query
 
