@@ -61,7 +61,7 @@ var connection = mysql.createConnection({
           if (res[i].product_name == answer.choice) {
             var userChoice = res[i];
           }
-          console.log(userChoice);
+          // console.log(userChoice);
         }
 
         //create variables for purchase total and the math to update stock
@@ -102,7 +102,9 @@ var connection = mysql.createConnection({
         shop();
       }
       else {
-        console.log("Thanks for shopping! Come again!")
+        console.log(`
+        Thanks for shopping! Come again!
+        `)
         connection.end();
       }
     })
